@@ -1,3 +1,6 @@
+require("express-async-errors");
+require("dotenv").config();
+
 import express from "express";
 import morgan from "morgan";
 import helmet from "helmet";
@@ -5,8 +8,6 @@ import cors from "cors";
 import { connectToMongoDB } from "./mongo";
 import userRoutes from "./routes/user.routes";
 import * as middlewares from "./middlewares";
-
-require("dotenv").config();
 
 const app = express();
 

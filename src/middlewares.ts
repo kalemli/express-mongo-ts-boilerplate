@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-
-import ErrorResponse from "./utils/error-response";
+import ErrorResponse, { CustomError } from "./utils/error-response";
 
 export function notFound(req: Request, res: Response, next: NextFunction) {
   res.status(404);
@@ -15,10 +14,13 @@ export function errorHandler(
   res: Response<ErrorResponse>,
   next: NextFunction
 ) {
-  const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
-  res.status(statusCode);
-  res.json({
-    message: err.message,
+  if (err instanceof CustomError) {
+    res.status(err.statusCode).send({ message: err.message });
+    return;
+  }
+
+  res.status(400).send({
+    message: "Something went wrong",
     stack: process.env.NODE_ENV === "production" ? "🥞" : err.stack,
   });
 }
