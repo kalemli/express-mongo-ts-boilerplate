@@ -1,10 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import ErrorResponse, { CustomError } from "./utils/error-response";
+import ErrorResponse, { CustomError, NotFound } from "./utils/error-response";
 
 export function notFound(req: Request, res: Response, next: NextFunction) {
-  res.status(404);
-  const error = new Error(`🔍 - Not Found - ${req.originalUrl}`);
-  next(error);
+  throw new NotFound(`🔍 - Not Found - ${req.originalUrl}`);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
